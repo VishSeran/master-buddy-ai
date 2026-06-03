@@ -7,3 +7,5 @@ def load_ref_model(model_name):
 def load_tokenizer(model_name):
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     return tokenizer
+
+def bnb_config ()
