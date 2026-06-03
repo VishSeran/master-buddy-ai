@@ -25,11 +25,12 @@ def get_dataset(file_path):
     return data
 
 def dataset_preprocess(dataset, tokenizer):
-
     try:
-        
         if not dataset:
             raise ValueError("Dataset is empty or None")
+        
+        if tokenizer is None:
+            raise ValueError("Tokenizer is None")
         
         for data in dataset:
             message = [{"role":"user", "content":data['prompt']}]
@@ -42,6 +43,12 @@ def dataset_preprocess(dataset, tokenizer):
             
             data['prompt'] = prompt
             
+    except ValueError as e:
+        print(f"Invalid input: {e}")
+    
+    except KeyError as e:
+        print(f"Missing expected field in dataset: {e}")
+            
     except Exception as e:
         print(f"Unexpected error: {e}")
         
@@ -49,6 +56,8 @@ def dataset_preprocess(dataset, tokenizer):
 
 ## convert list of dataset into a Huggingface Dataset Object
 def train_test_dataset_object(dataset, test_percentage=0.2):
+    
+    train_dataset, test_dataset = None, None
     
     try:
         
@@ -63,6 +72,9 @@ def train_test_dataset_object(dataset, test_percentage=0.2):
         
         train_dataset = Dataset.from_list(train_set)
         test_dataset = Dataset.from_list(test_set)
+        
+    except ValueError as e:
+        print(f"Invalid input: {e}")
     
     except Exception as e:
         print(f"Unexpected error: {e}")
