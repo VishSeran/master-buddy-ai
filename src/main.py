@@ -1,4 +1,4 @@
-from model_config import load_ref_model, load_tokenizer
+from model_config import load_ref_model, load_tokenizer,get_lora_model
 from dataset_loader import get_dataset,dataset_preprocess,train_test_dataset_object
 
 def main():
@@ -17,6 +17,10 @@ def main():
 
         processed_dataset = dataset_preprocess(dataset=dataset, tokenizer=tokenizer)
         train_dataset, eval_dataset = train_test_dataset_object(dataset=processed_dataset)
+        
+        peft_model = get_lora_model(model_name=model_name)
+        
+        
 
     except ValueError as e:
         print(f"Invalid input: {e}")
