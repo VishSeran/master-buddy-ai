@@ -25,10 +25,27 @@ def main():
                                 train_dataset=train_dataset, eval_dataset=eval_dataset,
                                 tokenizer=tokenizer)
         #train model
-        dpo_trainer.train()
+        train_results = dpo_trainer.train()
+        eval_results = dpo_trainer.evaluate()
         
         #save model
-        dpo_trainer.save_model("")
+        dpo_trainer.save_model("../model/master_buddy_v1.0")
+        tokenizer.save_pretrained("../model/master_buddy_v1.0")
+        dpo_trainer.save_state()
+        
+        #save train and eval metrics
+        dpo_trainer.save_metrics(
+            "train",
+            train_results.metrics
+        )
+        
+        dpo_trainer.save_metrics(
+            "eval",
+            eval_results.metrics
+        )
+        
+        
+        
     except ValueError as e:
         print(f"Invalid input: {e}")
     except Exception as e:
