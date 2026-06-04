@@ -11,6 +11,10 @@ def load_ref_model(model_name):
         param.requires_grad = False
     return ref_model.to(device)
 
+def load_base_model (model_name):
+    base_model = AutoModelForCausalLM.from_pretrained(model_name)
+    return base_model
+
 def load_tokenizer(model_name):
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     tokenizer.pad_token = tokenizer.eos_token
