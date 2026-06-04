@@ -7,10 +7,18 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def load_ref_model(model_name):
     ref_model = AutoModelForCausalLM.from_pretrained(model_name)
+    for param in ref_model.parameters():
+        param.requires_grad = False
     return ref_model.to(device)
+
+def load_base_model (model_name):
+    base_model = AutoModelForCausalLM.from_pretrained(model_name)
+    return base_model
 
 def load_tokenizer(model_name):
     tokenizer = AutoTokenizer.from_pretrained(model_name)
+    tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.padding_side = "right"
     return tokenizer
 
 bnb_config = BitsAndBytesConfig(
