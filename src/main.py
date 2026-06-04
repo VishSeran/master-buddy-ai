@@ -59,26 +59,29 @@ def main():
         )
         print("dpo trainer evaluation results saved")
         
+        print(f"Train loss: {train_results.metrics.get('train_loss', 'N/A')}")
+        print(f"Eval loss: {eval_results.metrics.get('eval_loss', 'N/A')}")
+        
         # merge the trained model with the base model
         model = PeftModel.from_pretrained(
             base_model,
             save_path
         )
         
-        merge_model = model.merge_and_unload()
-        
         save_merge_model_path = "../model/master_buddy_merged_v1.0"
         if not save_merge_model_path:
             raise ValueError("merged save path is empty or None")
         
+        merge_model = model.merge_and_unload()
         merge_model.save_pretrained(save_merge_model_path)
         tokenizer.save_pretrained(save_merge_model_path)
         print(f"Merged model saved to {save_merge_model_path}")
-        
-        
-        
         
     except ValueError as e:
         print(f"Invalid input: {e}")
     except Exception as e:
         print(f"Unexpected error: {e}")
+
+
+if __name__ == '__main__':
+    main()
