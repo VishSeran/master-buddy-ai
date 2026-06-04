@@ -1,5 +1,6 @@
 from model_config import load_ref_model, load_tokenizer,get_lora_model
 from dataset_loader import get_dataset,dataset_preprocess,train_test_dataset_object
+from dpo_config import dpoTrainer
 
 def main():
     
@@ -20,8 +21,14 @@ def main():
         
         peft_model = get_lora_model(model_name=model_name)
         
+        dpo_trainer = dpoTrainer(model=peft_model, ref_model=ref_model,
+                                train_dataset=train_dataset, eval_dataset=eval_dataset,
+                                tokenizer=tokenizer)
+        #train model
+        dpo_trainer.train()
         
-
+        #save model
+        dpo_trainer.save_model("")
     except ValueError as e:
         print(f"Invalid input: {e}")
     except Exception as e:
