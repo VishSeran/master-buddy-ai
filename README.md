@@ -150,7 +150,3 @@ After training, StudyBuddy-AI will:
 AI alignment isn't just for safety — it's also about **usefulness**. This project demonstrates how techniques like DPO, originally developed for aligning large models to human values, can be applied in smaller, targeted domains to make AI genuinely better at a specific task. In education, where clarity matters more than complexity, this kind of preference alignment has real impact.
 
 ---
-
-## 📄 License
-
-MIT License — feel free to use, modify, and build on this project.
