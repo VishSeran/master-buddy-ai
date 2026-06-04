@@ -32,13 +32,16 @@ def main():
         if not save_path:
             raise ValueError("save path is empty or None")
         
-        #train model
+        print("=" * 40)
+        print("   model training started!!!")
+        print("=" * 40)
         train_results = dpo_trainer.train()
         eval_results = dpo_trainer.evaluate()
+        print("=" * 40)
+        print("   model training completed!!!")
+        print("=" * 40)
         
         #save model
-        
-        
         dpo_trainer.save_model(save_path)
         print(f"dpo model saved to {save_path}")
         tokenizer.save_pretrained(save_path)
