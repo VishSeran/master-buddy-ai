@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,ConfigDict
 from langchain_huggingface import HuggingFacePipeline,ChatHuggingFace
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
@@ -9,6 +9,9 @@ class chatMessage(BaseModel):
     message:str
     
 class Model(BaseModel):
+    
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+    llm_model:object=None
     
     def __init__(self, model_name = "SeranVishwa/master-buddy-v1.0",
                  task="text-generation", pipeline_kwargs={
@@ -24,7 +27,7 @@ class Model(BaseModel):
         
         self.llm_model = ChatHuggingFace(llm=model,temperature=1)
     
-    def chain(self, message:str):
+    def chat(self, message:str):
         
         template = """You are a helpful study assistant. give accurate answers descriptively for user questions.
                     user: {question}
