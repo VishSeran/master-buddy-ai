@@ -5,7 +5,7 @@ from langchain_core.output_parsers import StrOutputParser
 import re
 
 
-class chatMessage(BaseModel):
+class ChatMessage(BaseModel):
     message:str
     
 class Model(BaseModel):
