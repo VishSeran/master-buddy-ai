@@ -1,5 +1,8 @@
 from pydantic import BaseModel
 from langchain_huggingface import HuggingFacePipeline,ChatHuggingFace
+from langchain_core.prompts import PromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+import re
 
 
 class chatMessage(BaseModel):
@@ -20,3 +23,21 @@ class Model(BaseModel):
         )
         
         self.llm_model = ChatHuggingFace(llm=model,temperature=1)
+    
+    def chain(self, message:str):
+        
+        template = """You are a helpful study assistant. give accurate answers descriptively for user questions.
+                    user: {question}
+                    your response:
+        """
+        
+        prompt = PromptTemplate(template=template,
+                                input_variables=['question'])
+        
+        chain = prompt | self.llm_model | StrOutputParser()
+        
+        response = chain.invoke(input={"question":message})
+        
+        match = re.search(r'<\|start_header_id\|>assistant<\|end_header_id\|>\s*(.*)',response,re.DOTALL)
+        
+        return match.group(1).strip() if match else response.strip()
