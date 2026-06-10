@@ -1,16 +1,16 @@
 from typing import Any
 from fastapi import APIRouter,HTTPException,status
 from app.schemas.chat import Model,ChatMessage
+from fastapi import Request
 
 router = APIRouter()
 
-llm_model = Model()
 
 @router.post("/chat")
-async def chat(body:ChatMessage) -> Any:
+async def chat(body:ChatMessage, request:Request) -> Any:
     try:
         
-        response = llm_model.chat(message=body.message)
+        response = request.app.state.llm_model.chat(message=body.message)
         return {
             "response" : response
         } 
